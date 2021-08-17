@@ -1,26 +1,9 @@
 import numpy as np
 from enum import Enum
 
-
-class Connect4Colors(Enum):
-	"Enum for the different colors of a connect 4 game"
-	RED = 1
-	YELLOW = 2
-
-class Connect4Pieces(Enum):
-	"Enum for the different pieces of a connect 4 game"
-	EMPTY = 0
-	RED_PIECE = 1
-	YELLOW_PIECE = 2
-
-class Connect4States(Enum):
-	"Enum for the different states of a connect 4 game"
-	NOT_STARTED = 1
-	RED_TURN = 2
-	YELLOW_TURN = 3
-	RED_WIN = 4
-	YELLOW_WIN = 5
-
+import Connect4Colors
+import Connect4Pieces
+import Connect4States
 
 class Connect4:
 	"Represents a game of connect 4"
