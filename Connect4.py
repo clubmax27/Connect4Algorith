@@ -1,9 +1,9 @@
 import numpy as np
 from enum import Enum
 
-import Connect4Colors
-import Connect4Pieces
-import Connect4States
+from Connect4States import Connect4States
+from Connect4Colors import Connect4Colors
+from Connect4Pieces import Connect4Pieces
 
 class Connect4:
 	"Represents a game of connect 4"
@@ -14,14 +14,10 @@ class Connect4:
 	CONSECUTIVE = 4
 
 	def __init__(self, color):
-		self.grid = np.zeros((7,6))
+		self.grid = np.zeros((Connect4.HEIGHT,Connect4.WIDTH))
 
 		state = Connect4States.RED_TURN if color == Connect4Colors.RED else Connect4States.YELLOW_TURN
 		self.state = state
-
-		self.HEIGHT = 6
-		self.WIDTH = 7
-		self.CONSECUTIVE = 4
 
 	def playMove(self, column):
 		"""Play a move in the selected column
@@ -126,8 +122,9 @@ class Connect4:
 	def __checkConsecutivePieces(self, ox, oy, dx, dy, color):
 		consecutivePieces = 0
 
+
 		for i in range(self.CONSECUTIVE):
-			if self.grid[ox + dx * i, oy + dy * i] == color:
+			if self.grid[oy + dy * i, ox + dx * i] == color:
 				consecutivePieces += 1
 			else:
 				consecutivePieces = 0
