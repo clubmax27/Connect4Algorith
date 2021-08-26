@@ -14,7 +14,7 @@ class Connect4:
 	CONSECUTIVE = 4
 
 	def __init__(self, color):
-		self.grid = np.zeros((Connect4.HEIGHT,Connect4.WIDTH))
+		self.grid = np.zeros((Connect4.HEIGHT,Connect4.WIDTH), dtype=int)
 
 		state = Connect4States.RED_TURN if color == Connect4Colors.RED else Connect4States.YELLOW_TURN
 		self.state = state
@@ -81,11 +81,9 @@ class Connect4:
 
 		status = 0
 		if self.__checkConnect4(Connect4Pieces.RED_PIECE.value):
-			print("Red won")
 			status = 1
 
 		if self.__checkConnect4(Connect4Pieces.YELLOW_PIECE.value):
-			print("Yellow won")
 			status = 2
 
 		return status
@@ -133,4 +131,4 @@ class Connect4:
 
 
 	def printGrid(self):
-		print(self.grid)
+		print(np.flipud(self.grid))

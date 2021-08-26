@@ -12,7 +12,18 @@ def main():
 		game.printGrid()
 		column = int(input("what column to play in ? (1 - 7)"))
 		game.playMove(column - 1)
-		print(ai.MinMaxAlgorithm(game, 0, Connect4Colors.YELLOW))
+
+		player = Connect4Colors.RED.value
+		if game.state == Connect4States.YELLOW_TURN:
+			player = Connect4Colors.YELLOW.value
+
+		score = ai.MinMaxAlgorithm(game, 3, player)
+		print(score)
+		if score == 10000:
+			print("Yellow can only win")
+
+		if score == -10000:
+			print("Red can only win")
 
 if __name__=="__main__":
    main()
