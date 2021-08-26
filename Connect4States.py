@@ -7,3 +7,4 @@ class Connect4States(Enum):
 	YELLOW_TURN = 3
 	RED_WIN = 4
 	YELLOW_WIN = 5
+	STALEMATE = 6

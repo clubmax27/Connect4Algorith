@@ -63,6 +63,9 @@ class Connect4:
 		if gameStatus == 2:
 			self.state = Connect4States.YELLOW_WIN
 
+	def isValidLocation(self, column):
+		return self.grid[self.HEIGHT - 1, column] == 0
+
 
 	def switchTurn(self):
 		"Switchs the turn of the game"
@@ -96,20 +99,20 @@ class Connect4:
 				isConnect4 = False
 
 				#Check for row connect 4
-				if x + self.CONSECUTIVE < self.WIDTH:
-					isConnect4 = self.__checkConsecutivePieces(x, y, 1, 0, color) or isConnect4
+				if not isConnect4 and x + self.CONSECUTIVE < self.WIDTH:
+					isConnect4 = self.__checkConsecutivePieces(x, y, 1, 0, color)
 
 				#Check for column connect 4
-				if y + self.CONSECUTIVE < self.HEIGHT:
-					isConnect4 = self.__checkConsecutivePieces(x, y, 0, 1, color) or isConnect4
+				if not isConnect4 and y + self.CONSECUTIVE < self.HEIGHT:
+					isConnect4 = self.__checkConsecutivePieces(x, y, 0, 1, color)
 
 				#Check for (1;1) diagonal connect 4
-				if x + self.CONSECUTIVE < self.WIDTH and y + self.CONSECUTIVE < self.HEIGHT:
-					isConnect4 = isConnect4 = self.__checkConsecutivePieces(x, y, 1, 1, color) or isConnect4
+				if not isConnect4 and (x + self.CONSECUTIVE < self.WIDTH) and (y + self.CONSECUTIVE < self.HEIGHT):
+					isConnect4 = self.__checkConsecutivePieces(x, y, 1, 1, color)
 
 				#Check for (1;-1) diagonal connect 4
-				if x + self.CONSECUTIVE < self.WIDTH and y - self.CONSECUTIVE > -1:
-					isConnect4 = self.__checkConsecutivePieces(x, y, 1, -1, color) or isConnect4
+				if not isConnect4 and (x + self.CONSECUTIVE < self.WIDTH) and (y - self.CONSECUTIVE > -1):
+					isConnect4 = self.__checkConsecutivePieces(x, y, 1, -1, color)
 
 				if isConnect4:
 					return True
@@ -119,7 +122,7 @@ class Connect4:
 
 	def __checkConsecutivePieces(self, ox, oy, dx, dy, color):
 		consecutivePieces = 0
-
+		#print(ox, oy)
 
 		for i in range(self.CONSECUTIVE):
 			if self.grid[oy + dy * i, ox + dx * i] == color:

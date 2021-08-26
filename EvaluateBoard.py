@@ -11,8 +11,8 @@ Negative score means Red is winning"""
 def EvaluateBoard(game):
 
 	centerPiecesCoef = 5
-	combosOf2Coef = 2
-	combosOf3Coef = 10
+	combosOf2Coef = 8
+	combosOf3Coef = 15
 	multipleThreatsCoef = 100
 
 	#We check if the game is won, in this case the result is trivial
@@ -21,6 +21,9 @@ def EvaluateBoard(game):
 
 	if game.state == Connect4States.RED_WIN:
 		return -10000 
+
+	if game.state == Connect4States.STALEMATE:
+		return 0 
 
 	#We evaluate the game based on three characteristics
 
