@@ -99,19 +99,19 @@ class Connect4:
 				isConnect4 = False
 
 				#Check for row connect 4
-				if not isConnect4 and x + self.CONSECUTIVE < self.WIDTH:
+				if not isConnect4 and x + self.CONSECUTIVE <= self.WIDTH:
 					isConnect4 = self.__checkConsecutivePieces(x, y, 1, 0, color)
 
 				#Check for column connect 4
-				if not isConnect4 and y + self.CONSECUTIVE < self.HEIGHT:
+				if not isConnect4 and y + self.CONSECUTIVE <= self.HEIGHT:
 					isConnect4 = self.__checkConsecutivePieces(x, y, 0, 1, color)
 
 				#Check for (1;1) diagonal connect 4
-				if not isConnect4 and (x + self.CONSECUTIVE < self.WIDTH) and (y + self.CONSECUTIVE < self.HEIGHT):
+				if not isConnect4 and (x + self.CONSECUTIVE <= self.WIDTH) and (y + self.CONSECUTIVE <= self.HEIGHT):
 					isConnect4 = self.__checkConsecutivePieces(x, y, 1, 1, color)
 
 				#Check for (1;-1) diagonal connect 4
-				if not isConnect4 and (x + self.CONSECUTIVE < self.WIDTH) and (y - self.CONSECUTIVE > -1):
+				if not isConnect4 and (x + self.CONSECUTIVE <= self.WIDTH) and (y - self.CONSECUTIVE <= -1):
 					isConnect4 = self.__checkConsecutivePieces(x, y, 1, -1, color)
 
 				if isConnect4:
@@ -129,6 +129,9 @@ class Connect4:
 				consecutivePieces += 1
 			else:
 				consecutivePieces = 0
+
+		if consecutivePieces == self.CONSECUTIVE:
+				print("detected connect 4 : ", ox, oy, dx, dy)
 
 		return (True if consecutivePieces == self.CONSECUTIVE else False)
 

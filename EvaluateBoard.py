@@ -10,8 +10,8 @@ Negative score means Red is winning"""
 
 def EvaluateBoard(game):
 
-	centerPiecesCoef = 5
-	combosOf2Coef = 8
+	centerPiecesCoef = 1
+	combosOf2Coef = 5
 	combosOf3Coef = 15
 	multipleThreatsCoef = 100
 
@@ -40,6 +40,11 @@ def EvaluateBoard(game):
 	multipleThreats = __countCombosOfMultipleThreats(game, 3, Connect4Pieces.YELLOW_PIECE.value) - __countCombosOfMultipleThreats(game, 3, Connect4Pieces.YELLOW_PIECE.value)
 
 	#Fifth, instant double line, is handled by the depth of MinMax
+
+	print("Score for pieces in the center : {0}".format(centerPieces * centerPiecesCoef))
+	print("Score for combos of 2 : {0}".format(combosOf2 * combosOf2Coef))
+	print("Score for combos of 3 : {0}".format(combosOf3 * combosOf3Coef))
+	print("Score for multiple threats : {0}".format(multipleThreats * multipleThreatsCoef))
 
 	return centerPieces * centerPiecesCoef + \
 		   combosOf2 * combosOf2Coef + \
@@ -85,38 +90,38 @@ def __countCombosOfPiecesAroundEmptySpace(game, x, y, consecutive, color):
 	isThreatPresent = False
 
 	#Check for (1;0) row connect 4
-	if x + (consecutive + 1) < Connect4.WIDTH:
+	if x + Connect4.CONSECUTIVE < Connect4.WIDTH:
 		isThreatPresent = isThreatPresent or __checkConsecutivePiecesWithEmptySpace(game, x, y, 1, 0, color, consecutive)
 
 	#Check for (-1;0) row connect 4
-	if x - (consecutive + 1) >= 0:
-		isThreatPresent = isThreatPresent or __checkConsecutivePiecesWithEmptySpace(game, x, y, 1, 0, color, consecutive)
+	if x - Connect4.CONSECUTIVE >= 0:
+		isThreatPresent = isThreatPresent or __checkConsecutivePiecesWithEmptySpace(game, x, y, -1, 0, color, consecutive)
 
 
 	#Check for (0;1) column connect 4
-	if y + (consecutive + 1) < Connect4.HEIGHT:
+	if y + Connect4.CONSECUTIVE < Connect4.HEIGHT:
 		isThreatPresent = isThreatPresent or __checkConsecutivePiecesWithEmptySpace(game, x, y, 0, 1, color, consecutive)
 
 	#Check for (0;-1) column connect 4
-	if y - (consecutive + 1) >= 0:
+	if y - Connect4.CONSECUTIVE >= 0:
 		isThreatPresent = isThreatPresent or __checkConsecutivePiecesWithEmptySpace(game, x, y, 0, -1, color, consecutive)
 
 
 	#Check for (1;1) diagonal connect 4
-	if x + (consecutive + 1) < Connect4.WIDTH and y + (consecutive + 1) < Connect4.HEIGHT:
+	if x + Connect4.CONSECUTIVE < Connect4.WIDTH and y + Connect4.CONSECUTIVE < Connect4.HEIGHT:
 		isThreatPresent = isThreatPresent or __checkConsecutivePiecesWithEmptySpace(game, x, y, 1, 1, color, consecutive)
 
 	#Check for (-1;-1) diagonal connect 4
-	if x - (consecutive + 1) >= 0 and y - (consecutive + 1) >= 0:
+	if x - Connect4.CONSECUTIVE >= 0 and y - Connect4.CONSECUTIVE >= 0:
 		isThreatPresent = isThreatPresent or __checkConsecutivePiecesWithEmptySpace(game, x, y, -1, -1, color, consecutive)
 
 
 	#Check for (1;-1) diagonal connect 4
-	if x + (consecutive + 1) < Connect4.WIDTH and y - (consecutive + 1) >= 0:
+	if x + Connect4.CONSECUTIVE < Connect4.WIDTH and y - Connect4.CONSECUTIVE >= 0:
 		isThreatPresent = isThreatPresent or __checkConsecutivePiecesWithEmptySpace(game, x, y, 1, -1, color, consecutive)
 
 	#Check for (-1;1) diagonal connect 4
-	if x + (consecutive + 1) < Connect4.WIDTH and y - (consecutive + 1) >= 0:
+	if x - Connect4.CONSECUTIVE > 0 and y + Connect4.CONSECUTIVE < Connect4.HEIGHT:
 		isThreatPresent = isThreatPresent or __checkConsecutivePiecesWithEmptySpace(game, x, y, -1, 1, color, consecutive)
 
 	return isThreatPresent
@@ -124,16 +129,25 @@ def __countCombosOfPiecesAroundEmptySpace(game, x, y, consecutive, color):
 def __checkConsecutivePiecesWithEmptySpace(game, ox, oy, dx, dy, color, consecutive):
 	
 	#If (ox;oy) is not an empty space, skip
-	if game.grid[oy, ox] == Connect4Pieces.EMPTY:
-		consecutivePieces = 0
+	if game.grid[oy, ox] == Connect4Pieces.EMPTY.value:
+		oppositeColor = Connect4Pieces.getOppositeColorPiece(color)
 
-		for i in range(consecutive):
-			if game.grid[oy + dy * (i + 1), ox + dx * (i + 1)] == color:
-				consecutivePieces += 1
-			else:
-				consecutivePieces = 0
+		consecutivePiecesStartingByEmptySpace = 0
+		consecutivePiecesWithEmptySpaceInTheMiddle = 0
 
-		if consecutivePieces == consecutive:
+		for i in range(Connect4.CONSECUTIVE):
+			if game.grid[oy + dy * i, ox + dx * i] == color:
+				consecutivePiecesStartingByEmptySpace += 1
+			if game.grid[oy + dy * i, ox + dx * i] == oppositeColor:
+				consecutivePiecesStartingByEmptySpace = 0
+		if (0 <= (ox - dx) < Connect4.WIDTH) and (0 <= (oy - dy) < Connect4.HEIGHT):
+			for i in range(Connect4.CONSECUTIVE):
+				if game.grid[oy + dy * (i - 1), ox + dx * (i - 1)] == color:
+					consecutivePiecesWithEmptySpaceInTheMiddle += 1
+				if game.grid[oy + dy * (i - 1), ox + dx * (i - 1)] == oppositeColor:
+					consecutivePiecesWithEmptySpaceInTheMiddle = 0
+
+		if consecutivePiecesStartingByEmptySpace == consecutive or consecutivePiecesWithEmptySpaceInTheMiddle == consecutive:
 			return True
 	
 	return False

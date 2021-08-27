@@ -7,6 +7,7 @@ from Connect4States import Connect4States
 from Connect4Colors import Connect4Colors
 
 from MinMax import MinMax
+from EvaluateBoard import EvaluateBoard
 
 from GUI import LoadGUI, handleMouseMotion, drawBoard, handleGameVictory
 from GUIConsts import GUIConsts
@@ -39,7 +40,6 @@ def main():
 
 				if game.isValidLocation(column):
 					game.playMove(column)
-					print(game.state)
 
 					if game.state == Connect4States.RED_WIN or game.state == Connect4States.YELLOW_WIN:
 						handleGameVictory(screen, game)
@@ -48,9 +48,11 @@ def main():
 						player = Connect4Colors.RED.value
 						if game.state == Connect4States.YELLOW_TURN:
 							player = Connect4Colors.YELLOW.value
-
-						column, score = ai.MinMaxAlgorithm(game, 3, player)
+						column, score = ai.MinMaxAlgorithm(game,3, player)
+						print(score)
 						game.playMove(column)
+						print("-------------------------------------------------")
+						EvaluateBoard(game)
 						if game.state == Connect4States.RED_WIN or game.state == Connect4States.YELLOW_WIN:
 							handleGameVictory(screen, game)
 
