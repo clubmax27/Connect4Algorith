@@ -1,12 +1,14 @@
 import pygame
 import math
 import sys
+import time
 
 import Connect4
 from Connect4States import Connect4States
 from Connect4Colors import Connect4Colors
 
 from MinMax import MinMax
+from AlphaBeta import AlphaBeta
 from EvaluateBoard import EvaluateBoard
 
 from GUI import LoadGUI, handleMouseMotion, drawBoard, handleGameVictory
@@ -15,10 +17,11 @@ from GUIConsts import GUIConsts
 
 def main():
 
+	DEPTH = 4
+
 	game = Connect4.Connect4(Connect4Colors.YELLOW)
 	screen = LoadGUI(game.grid)
 
-	ai = MinMax()
 	while game.state != Connect4States.RED_WIN or game.state != Connect4States.YELLOW_WIN:
 
 		for event in pygame.event.get(): 
@@ -48,11 +51,22 @@ def main():
 						player = Connect4Colors.RED.value
 						if game.state == Connect4States.YELLOW_TURN:
 							player = Connect4Colors.YELLOW.value
-						column, score = ai.MinMaxAlgorithm(game,3, player)
-						print(score)
-						game.playMove(column)
+
+						"""start = time.time()
+						column, score = MinMax.MinMaxAlgorithm(game, DEPTH, player)
+						end = time.time()
+						print("Time for the Min Max algorith : {0}".format(end - start))"""
+
+						start = time.time()
+						column, score = AlphaBeta.AlphaBetaAlgorithm(game, DEPTH, player, -math.inf, math.inf)
+						end = time.time()
+						print("Time for the Alpha Beta algorith : {0}".format(end - start))
+						print("Score : {0}".format(score))
+						print("Number of grid evaluated : {0}".format(AlphaBeta.numberOfEvaluations))
 						print("-------------------------------------------------")
-						EvaluateBoard(game)
+
+						game.playMove(column)
+
 						if game.state == Connect4States.RED_WIN or game.state == Connect4States.YELLOW_WIN:
 							handleGameVictory(screen, game)
 

@@ -19,7 +19,7 @@ class MinMax:
 		pass
 
 
-	def __possibleMoves(self, game):
+	def __possibleMoves(game):
 		ListOfPossibleMoves = []
 		ListOfPossibleGames = []
 		if game.state == Connect4States.RED_WIN or game.state == Connect4States.YELLOW_WIN: #If game has ended, not further move are possible
@@ -36,16 +36,16 @@ class MinMax:
 
 
 
-	def MinMaxAlgorithm(self, game, depth, player):
-		possibleMoves, gameChildren = self.__possibleMoves(game)
+	def MinMaxAlgorithm(game, depth, player):
+		possibleMoves, gameChildren = MinMax.__possibleMoves(game)
 
 		if depth == 0 or len(gameChildren) == 0:
 			return (None, EvaluateBoard(game))
 
 		if player == MinMax.MAX: #MAX because we want the maximum score for our color
-			scoreChildren = [self.MinMaxAlgorithm(gameChildren[i], depth - 1, MinMax.MIN)[1] for i in range(len(gameChildren))]
+			scoreChildren = [MinMax.MinMaxAlgorithm(gameChildren[i], depth - 1, MinMax.MIN)[1] for i in range(len(gameChildren))]
 			return possibleMoves[scoreChildren.index(max(scoreChildren))], max(scoreChildren)
 
 		else:
-			scoreChildren = [self.MinMaxAlgorithm(gameChildren[i], depth - 1, MinMax.MAX)[1] for i in range(len(gameChildren))]
+			scoreChildren = [MinMax.MinMaxAlgorithm(gameChildren[i], depth - 1, MinMax.MAX)[1] for i in range(len(gameChildren))]
 			return possibleMoves[scoreChildren.index(min(scoreChildren))], min(scoreChildren)

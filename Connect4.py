@@ -130,8 +130,8 @@ class Connect4:
 			else:
 				consecutivePieces = 0
 
-		if consecutivePieces == self.CONSECUTIVE:
-				print("detected connect 4 : ", ox, oy, dx, dy)
+		"""if consecutivePieces == self.CONSECUTIVE:
+				print("detected connect 4 : ", ox, oy, dx, dy)"""
 
 		return (True if consecutivePieces == self.CONSECUTIVE else False)
 
