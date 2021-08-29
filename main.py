@@ -17,7 +17,7 @@ from GUIConsts import GUIConsts
 
 def main():
 
-	DEPTH = 4
+	DEPTH = 5
 
 	game = Connect4.Connect4(Connect4Colors.YELLOW)
 	screen = LoadGUI(game.grid)
@@ -56,6 +56,8 @@ def main():
 						column, score = MinMax.MinMaxAlgorithm(game, DEPTH, player)
 						end = time.time()
 						print("Time for the Min Max algorith : {0}".format(end - start))"""
+
+						#MemoizedAlphaBeta = Memoize.Memoize(AlphaBeta.AlphaBetaAlgorithm)
 
 						start = time.time()
 						column, score = AlphaBeta.AlphaBetaAlgorithm(game, DEPTH, player, -math.inf, math.inf)

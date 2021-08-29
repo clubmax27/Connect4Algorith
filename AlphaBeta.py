@@ -9,6 +9,8 @@ from Connect4Pieces import Connect4Pieces
 
 from EvaluateBoard import EvaluateBoard
 
+from Memoize import Memoize
+
 class AlphaBeta:
 	"""MinMax algorithm for Connect 4
 	Positive score means Yellow is winning
@@ -23,7 +25,7 @@ class AlphaBeta:
 	def __init__(self):
 		pass
 
-
+	#@Memoize
 	def __possibleMoves(game):
 		ListOfPossibleMoves = []
 		ListOfPossibleGames = []
@@ -38,7 +40,6 @@ class AlphaBeta:
 				ListOfPossibleGames.append(NewGame)
 
 		return ListOfPossibleMoves, ListOfPossibleGames
-
 
 
 	def AlphaBetaAlgorithm(game, depth, player, alpha, beta):
@@ -84,7 +85,7 @@ class AlphaBeta:
 
 
 			return column, bestScore
-
+	"""
 	def score_position(board, piece):
 		start = time.time()
 		score = 0
@@ -143,4 +144,4 @@ class AlphaBeta:
 		if window.count(opp_piece) == 3 and window.count(EMPTY) == 1:
 			score -= 4
 
-		return score
+		return score"""

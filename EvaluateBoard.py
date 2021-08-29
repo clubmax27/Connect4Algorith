@@ -7,10 +7,13 @@ from Connect4States import Connect4States
 from Connect4Colors import Connect4Colors
 from Connect4Pieces import Connect4Pieces
 
+from Memoize import Memoize
+
 """Function to evaluate the score of a board
 Positive score means Yellow is winning
 Negative score means Red is winning"""
 
+@Memoize
 def EvaluateBoard(game):
 
 	centerPiecesCoef = 3
@@ -87,12 +90,33 @@ def __countCombosOfMultipleThreats(game, consecutive, color):
 def __countCombosOfPiecesWithEmptySpace(game, consecutive, color):
 	count = 0
 
-	for x in range(Connect4.WIDTH):
+	#Check for (1;0) row connect 4
+	for x in range(Connect4.WIDTH - 3):
 		for y in range(Connect4.HEIGHT):
-			count += __countCombosOfPiecesAroundEmptySpace(game, x, y, consecutive, color)
+			extract = game.grid[y, x:(x + consecutive)]
+			count =+ __checkCombosOfPiecesInExtract(extract, color, consecutive)
+
+	#Check for (0;1) column connect 4
+	for x in range(Connect4.WIDTH):
+		for y in range(Connect4.HEIGHT - 3):
+			extract = game.grid[y:(y + consecutive), x]
+			count =+ __checkCombosOfPiecesInExtract(extract, color, consecutive)
+
+	#Check for (1;1) diagonal connect 4
+	for x in range(Connect4.WIDTH - 3):
+		for y in range(Connect4.HEIGHT - 3):
+			extract = [game.grid[y + i, x + i] for i in range(Connect4.CONSECUTIVE)]
+			count =+ __checkCombosOfPiecesInExtract(extract, color, consecutive)
+
+	#Check for (1;-1) diagonal connect 4
+	for x in range(Connect4.WIDTH - 3):
+		for y in range(3, Connect4.HEIGHT):
+			extract = [game.grid[y - i, x + i] for i in range(Connect4.CONSECUTIVE)]
+			count =+ __checkCombosOfPiecesInExtract(extract, color, consecutive)
 
 	return count
 
+"""
 def __countCombosOfPiecesAroundEmptySpace(game, x, y, consecutive, color):
 	count = 0
 
@@ -119,7 +143,7 @@ def __countCombosOfPiecesAroundEmptySpace(game, x, y, consecutive, color):
 		extract = [game.grid[y - i, x + i] for i in range(Connect4.CONSECUTIVE)]
 		count =+ __checkCombosOfPiecesInExtract(extract, color, consecutive)
 
-	return count
+	return count"""
 
 def __checkCombosOfPiecesInExtract(extract, color, consecutive):
 
@@ -135,3 +159,21 @@ def __checkCombosOfPiecesInExtract(extract, color, consecutive):
 	if piecesOfColor == 0 and emptySpaces == Connect4.CONSECUTIVE - consecutive:
 		return -1
 	return 0
+
+def __evaluate_window(window):
+		score = 0
+		EMPTY = 0
+		piece = 1
+		opp_piece = 2
+
+		if np.count_nonzero(window == piece) == 4:
+			score += 100
+		elif np.count_nonzero(window == piece) == 3 and np.count_nonzero(window == EMPTY) == 1:
+			score += 5
+		elif np.count_nonzero(window == piece) == 2 and np.count_nonzero(window == EMPTY) == 2:
+			score += 2
+
+		if np.count_nonzero(window == opp_piece) == 3 and np.count_nonzero(window == EMPTY) == 1:
+			score -= 4
+
+		return score
