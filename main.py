@@ -18,9 +18,28 @@ from GUIConsts import GUIConsts
 def main():
 
 	DEPTH = 5
+	PLAYER_STARTING = False
 
 	game = Connect4.Connect4(Connect4Colors.YELLOW)
 	screen = LoadGUI(game.grid)
+
+	if not PLAYER_STARTING:
+		player = Connect4Colors.YELLOW.value if (game.state == Connect4States.YELLOW_TURN) else Connect4Colors.RED.value
+
+		start = time.time()
+		column, score = AlphaBeta.AlphaBetaAlgorithm(game, DEPTH, player, -math.inf, math.inf)
+		end = time.time()
+		print("Time for the Alpha Beta algorith : {0}".format(end - start))
+		print("Score : {0}".format(score))
+		print("Number of grid evaluated : {0}".format(AlphaBeta.numberOfEvaluations))
+		print("-------------------------------------------------")
+
+		game.playMove(column)
+		drawBoard(game.grid, screen)
+		print(game.state)
+
+	if game.isGameOver():
+		handleGameVictory(screen, game)
 
 	while game.state != Connect4States.RED_WIN or game.state != Connect4States.YELLOW_WIN:
 
@@ -48,9 +67,7 @@ def main():
 						handleGameVictory(screen, game)
 					else: #If game is not finished, we make the bot play
 
-						player = Connect4Colors.RED.value
-						if game.state == Connect4States.YELLOW_TURN:
-							player = Connect4Colors.YELLOW.value
+						player = Connect4Colors.YELLOW.value if (game.state == Connect4States.YELLOW_TURN) else Connect4Colors.RED.value
 
 						"""start = time.time()
 						column, score = MinMax.MinMaxAlgorithm(game, DEPTH, player)
