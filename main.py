@@ -44,7 +44,7 @@ def main():
 				if game.isValidLocation(column):
 					game.playMove(column)
 
-					if game.state == Connect4States.RED_WIN or game.state == Connect4States.YELLOW_WIN:
+					if game.isGameOver():
 						handleGameVictory(screen, game)
 					else: #If game is not finished, we make the bot play
 
@@ -69,7 +69,9 @@ def main():
 
 						game.playMove(column)
 
-						if game.state == Connect4States.RED_WIN or game.state == Connect4States.YELLOW_WIN:
+						print(game.state)
+
+						if game.isGameOver():
 							handleGameVictory(screen, game)
 
 				drawBoard(game.grid, screen)

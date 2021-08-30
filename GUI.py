@@ -58,9 +58,12 @@ def handleGameVictory(screen, game):
 	myfont = pygame.font.SysFont("monospace", 75)
 
 	if game.state == Connect4States.RED_WIN:
-		label = myfont.render("Player 1 wins!!", 1, GUIConsts.RED.value)
+		label = myfont.render("gg ez", 1, GUIConsts.RED.value)
 
 	if game.state == Connect4States.YELLOW_WIN:	
-		label = myfont.render("Player 2 wins!!", 1, GUIConsts.YELLOW.value)
+		label = myfont.render("well played", 1, GUIConsts.YELLOW.value)
+
+	if game.state == Connect4States.STALEMATE:	
+		label = myfont.render("stalemate", 1, GUIConsts.BLUE.value)
 
 	screen.blit(label, (40,10))

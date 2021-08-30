@@ -13,10 +13,10 @@ from Memoize import Memoize
 Positive score means Yellow is winning
 Negative score means Red is winning"""
 
-@Memoize
+#@Memoize
 def EvaluateBoard(game):
 
-	centerPiecesCoef = 3
+	centerPiecesCoef = 1
 	combosOf2Coef = 2
 	combosOf3Coef = 5
 	multipleThreatsCoef = 100
@@ -54,7 +54,7 @@ def EvaluateBoard(game):
 	print("Score for combos of 3 : {0}".format(combosOf3 * combosOf3Coef))
 	#print("Score for multiple threats : {0}".format(multipleThreats * multipleThreatsCoef))"""
 
-	print("Time for the Eval function : {0}".format(time.time() - start))
+	#print("Time for the Eval function : {0}".format(time.time() - start))
 	return centerPieces * centerPiecesCoef + \
 		   combosOf2 * combosOf2Coef + \
 		   combosOf3 * combosOf3Coef# + \

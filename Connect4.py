@@ -27,7 +27,7 @@ class Connect4:
 		#Should never trigger, but as a safety measure
 		if self.grid[self.HEIGHT - 1, column] != 0:
 			raise NameError("Column Full")
-		if self.state == Connect4States.RED_WIN or self.state == Connect4States.YELLOW_WIN:
+		if self.isGameOver():
 			raise NameError("Game ended")
 
 
@@ -58,13 +58,20 @@ class Connect4:
 			self.switchTurn()
 
 		#Set the correct state
-		if gameStatus == 1:
+		if gameStatus == Connect4States.RED_WIN.value:
 			self.state = Connect4States.RED_WIN
-		if gameStatus == 2:
+
+		if gameStatus == Connect4States.YELLOW_WIN.value:
 			self.state = Connect4States.YELLOW_WIN
 
+		if gameStatus == Connect4States.STALEMATE.value:
+			self.state = Connect4States.STALEMATE
+
 	def isValidLocation(self, column):
-		return self.grid[self.HEIGHT - 1, column] == 0
+		return (self.grid[self.HEIGHT - 1, column] == 0)
+
+	def isGameOver(self):
+		return self.state == Connect4States.RED_WIN or self.state == Connect4States.YELLOW_WIN or self.state == Connect4States.STALEMATE
 
 
 	def switchTurn(self):
@@ -76,6 +83,16 @@ class Connect4:
 			self.state = Connect4States.RED_TURN
 
 
+	def isGameStalemate(self):
+
+		for x in range(self.WIDTH):
+			for y in range(self.HEIGHT):
+				if self.grid[y, x] == Connect4Pieces.EMPTY.value:
+					#print("coordinates {0} {1} are not empty : value is {2}".format(x, y, self.grid[y, x]))
+					return False
+
+		return True
+
 
 
 	def checkIfGameFinished(self):
@@ -84,12 +101,16 @@ class Connect4:
 
 		status = 0
 		if self.__checkConnect4(Connect4Pieces.RED_PIECE.value):
-			status = 1
+			status = Connect4States.RED_WIN.value
 
 		if self.__checkConnect4(Connect4Pieces.YELLOW_PIECE.value):
-			status = 2
+			status = Connect4States.YELLOW_WIN.value
+
+		if self.isGameStalemate():
+			status = Connect4States.STALEMATE.value
 
 		return status
+
 
 
 	def __checkConnect4(self, color):
@@ -111,7 +132,7 @@ class Connect4:
 					isConnect4 = self.__checkConsecutivePieces(x, y, 1, 1, color)
 
 				#Check for (1;-1) diagonal connect 4
-				if not isConnect4 and (x + self.CONSECUTIVE <= self.WIDTH) and (y - self.CONSECUTIVE <= -1):
+				if not isConnect4 and (x + self.CONSECUTIVE <= self.WIDTH) and (y - self.CONSECUTIVE >= -1):
 					isConnect4 = self.__checkConsecutivePieces(x, y, 1, -1, color)
 
 				if isConnect4:
@@ -130,8 +151,8 @@ class Connect4:
 			else:
 				consecutivePieces = 0
 
-		"""if consecutivePieces == self.CONSECUTIVE:
-				print("detected connect 4 : ", ox, oy, dx, dy)"""
+		if consecutivePieces == self.CONSECUTIVE:
+				print("detected connect 4 : ", ox, oy, dx, dy)
 
 		return (True if consecutivePieces == self.CONSECUTIVE else False)
 

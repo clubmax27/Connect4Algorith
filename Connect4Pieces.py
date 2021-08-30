@@ -6,8 +6,8 @@ class Connect4Pieces(Enum):
 	RED_PIECE = 1
 	YELLOW_PIECE = 2
 
-	def getOppositeColorPiece(color):
+	"""def getOppositeColorPiece(color):
 		if color == Connect4Pieces.RED_PIECE:
 			return Connect4Pieces.YELLOW_PIECE
 		else:
-			return Connect4Pieces.RED_PIECE
+			return Connect4Pieces.RED_PIECE"""

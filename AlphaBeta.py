@@ -1,6 +1,7 @@
 import copy
 import math
 import time
+import random
 
 from Connect4 import Connect4
 from Connect4States import Connect4States
@@ -28,40 +29,41 @@ class AlphaBeta:
 	#@Memoize
 	def __possibleMoves(game):
 		ListOfPossibleMoves = []
-		ListOfPossibleGames = []
-		if game.state == Connect4States.RED_WIN or game.state == Connect4States.YELLOW_WIN: #If game has ended, not further move are possible
-			return ListOfPossibleMoves, ListOfPossibleGames
+		if game.isGameOver(): #If game has ended, not further move are possible
+			return []
 
 		for i in range(Connect4.WIDTH): #For every column
-			NewGame = copy.deepcopy(game)
-			if NewGame.grid[Connect4.HEIGHT - 1, i] == 0: #If move is playable
-				NewGame.playMove(i)
+			if game.grid[Connect4.HEIGHT - 1, i] == 0: #If move is playable
 				ListOfPossibleMoves.append(i)
-				ListOfPossibleGames.append(NewGame)
 
-		return ListOfPossibleMoves, ListOfPossibleGames
+		return ListOfPossibleMoves
 
 
 	def AlphaBetaAlgorithm(game, depth, player, alpha, beta):
-		possibleMoves, gameChildren = AlphaBeta.__possibleMoves(game)
+		possibleMoves = AlphaBeta.__possibleMoves(game)
+		random.shuffle(possibleMoves)
 
-		if depth == 0 or len(gameChildren) == 0:
+		if depth == 0 or len(possibleMoves) == 0:
 			AlphaBeta.numberOfEvaluations += 1
 			return (None, EvaluateBoard(game))
 
 		if player == AlphaBeta.MAX: #MAX because we want the maximum score for our color
 			bestScore = -math.inf
-			i = -1
 
-			for possibleGame in gameChildren:
-				i += 1
+			column = possibleMoves[0]
+			for possibleColumn in possibleMoves:
+
+				possibleGame = copy.deepcopy(game)
+				possibleGame.playMove(possibleColumn)
 
 				scoreChild = AlphaBeta.AlphaBetaAlgorithm(possibleGame, depth - 1, AlphaBeta.MIN, alpha, beta)[1]
 
 				if scoreChild > bestScore:
 					bestScore = scoreChild
-					column = possibleMoves[i]
+					column = possibleColumn
+
 				alpha = max(alpha, bestScore)
+
 				if beta <= alpha:
 					break
 
@@ -69,17 +71,21 @@ class AlphaBeta:
 
 		else:
 			bestScore = math.inf
-			i = -1
 
-			for possibleGame in gameChildren:
-				i += 1
+			column = possibleMoves[0]
+			for possibleColumn in possibleMoves:
+
+				possibleGame = copy.deepcopy(game)
+				possibleGame.playMove(possibleColumn)
 
 				scoreChild = AlphaBeta.AlphaBetaAlgorithm(possibleGame, depth - 1, AlphaBeta.MAX, alpha, beta)[1]
 
 				if scoreChild < bestScore:
 					bestScore = scoreChild
-					column = possibleMoves[i]
+					column = possibleColumn
+
 				beta = min(beta, bestScore)
+
 				if beta <= alpha:
 					break
 
