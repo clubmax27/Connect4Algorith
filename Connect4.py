@@ -88,7 +88,6 @@ class Connect4:
 		for x in range(self.WIDTH):
 			for y in range(self.HEIGHT):
 				if self.grid[y, x] == Connect4Pieces.EMPTY.value:
-					#print("coordinates {0} {1} are not empty : value is {2}".format(x, y, self.grid[y, x]))
 					return False
 
 		return True
@@ -143,16 +142,12 @@ class Connect4:
 
 	def __checkConsecutivePieces(self, ox, oy, dx, dy, color):
 		consecutivePieces = 0
-		#print(ox, oy)
 
 		for i in range(self.CONSECUTIVE):
 			if self.grid[oy + dy * i, ox + dx * i] == color:
 				consecutivePieces += 1
 			else:
 				consecutivePieces = 0
-
-		if consecutivePieces == self.CONSECUTIVE:
-				print("detected connect 4 : ", ox, oy, dx, dy)
 
 		return (True if consecutivePieces == self.CONSECUTIVE else False)
 

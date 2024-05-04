@@ -6,19 +6,23 @@ This project implements a MinMax algorithm with Alpha-Beta pruning for playing C
 
 The main components of the project include:
 
-- **Connect4.py**: Contains the logic for the Connect 4 game.
-- **Connect4States.py**: Enumerates the possible states of the Connect 4 game.
-- **Connect4Colors.py**: Enumerates the colors used in the Connect 4 game (e.g., RED, YELLOW).
-- **MinMax.py**: Implements the MinMax algorithm for game decision making.
-- **AlphaBeta.py**: Implements the Alpha-Beta pruning optimization for the MinMax algorithm.
-- **EvaluateBoard.py**: Contains the evaluation function to assess the game state.
-- **GUI.py**: Handles the graphical user interface using pygame for game visualization.
-- **GUIConsts.py**: Defines constants used in the GUI.
+-   **Connect4.py**: Contains the logic for the Connect 4 game.
+-   **Connect4States.py**: Enumerates the possible states of the Connect 4 game.
+-   **Connect4Colors.py**: Enumerates the colors used in the Connect 4 game (e.g., RED, YELLOW).
+-   **MinMax.py**: Implements the MinMax algorithm for game decision making.
+-   **AlphaBeta.py**: Implements the Alpha-Beta pruning optimization for the MinMax algorithm.
+-   **EvaluateBoard.py**: Contains the evaluation function to assess the game state.
+-   **GUI.py**: Handles the graphical user interface using pygame for game visualization.
+-   **GUIConsts.py**: Defines constants used in the GUI.
 
 ## Pre-requisites
 
-1. Ensure you have Python and pygame installed on your machine.
-2. Clone this repository to your local machine.
+1. Clone this repository to your local machine.
+2. Install the requirements with the following command :
+
+```bash
+pip install -r requirements.txt
+```
 
 ### Running the Program
 
@@ -30,14 +34,14 @@ python main.py
 
 ## Algorithm Parameters
 
-- **DEPTH**: The depth of the MinMax tree, controlling the algorithm's lookahead depth.
-- **PLAYER_STARTING**: Flag indicating whether the player or AI starts the game.
+-   **DEPTH**: The depth of the MinMax tree, controlling the algorithm's lookahead depth.
+-   **PLAYER_STARTING**: Flag indicating whether the player or AI starts the game.
 
 ## Gameplay
 
-- The AI player uses the Alpha-Beta pruning enhanced MinMax algorithm to make optimal moves.
-- Game states and moves are displayed in the pygame GUI.
-- The algorithm's performance metrics such as time taken and the number of evaluated grids are printed during AI decision-making.
+-   The AI player uses the Alpha-Beta pruning enhanced MinMax algorithm to make optimal moves.
+-   Game states and moves are displayed in the pygame GUI.
+-   The algorithm's performance metrics such as time taken and the number of evaluated grids are printed during AI decision-making.
 
 ## Contributions
 
