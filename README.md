@@ -2,6 +2,9 @@
 
 This project implements a MinMax algorithm with Alpha-Beta pruning for playing Connect 4 against an AI opponent. The algorithm is implemented in Python using the pygame library for the graphical user interface (GUI).
 
+![Image of the graphical interface of the game](images/game.png)
+![Image of the terminal output of the game](images/terminal.png)
+
 ## Overview
 
 The main components of the project include:
